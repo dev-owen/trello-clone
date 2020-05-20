@@ -1,16 +1,12 @@
 <template>
   <div class="trello-clone">
     <h1>Trello Clone</h1>
-    <div
-      class="trello-board"
-      v-for="board in data"
-      v-bind:key="board.boardName"
-    >
-      <div class="trello-board-name">{{ board.boardName }}</div>
-      <div class="trello-list" v-for="task in board.list" v-bind:key="task">
-        {{ task }}
+    <div class="trello-list" v-for="list in board" v-bind:key="list.listName">
+      <div class="trello-list-name">{{ list.listName }}</div>
+      <div class="trello-card" v-for="card in list.cards" v-bind:key="card">
+        {{ card }}
       </div>
-      <div class="trello-add-task" v-on:click="addTask(board.boardName)">+</div>
+      <div class="trello-add-task" v-on:click="addTask(list.listName)">+</div>
     </div>
   </div>
 </template>
@@ -20,62 +16,62 @@ export default {
   name: "TrelloClone",
   data() {
     return {
-      data: [
+      board: [
         {
-          boardName: "A",
-          list: ["TaskA", "TaskA2"]
+          listName: "A",
+          cards: ["TaskA", "TaskA2"]
         },
         {
-          boardName: "B",
-          list: ["TaskB"]
+          listName: "B",
+          cards: ["TaskB"]
         },
         {
-          boardName: "C",
-          list: []
+          listName: "C",
+          cards: []
         },
         {
-          boardName: "D",
-          list: ["TaskD"]
+          listName: "D",
+          cards: ["TaskD"]
         }
       ]
     };
   },
   methods: {
-    addTask(boardName) {
-      const newTask = prompt(boardName, "");
-      this.data.find(b => b.boardName === boardName).list.push(newTask);
+    addTask(listName) {
+      const newTask = prompt(listName, "");
+      this.board.find(list => list.listName === listName).cards.push(newTask);
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
-@mixin list-item {
+@mixin card {
   height: fit-content;
   padding: 10px 0;
   background-color: lightgray;
 }
 
-.trello-board {
+.trello-list {
   display: inline-flex;
   flex-direction: column;
   width: 100px;
   border: 1px solid black;
   margin: 0 20px;
 
-  .trello-board-name {
-    @include list-item;
+  .trello-list-name {
+    @include card;
     background-color: skyblue;
   }
 
-  .trello-list {
-    @include list-item;
+  .trello-card {
+    @include card;
     margin: 10px 0 0;
     border: 1px solid black;
   }
 
   .trello-add-task {
-    @include list-item;
+    @include card;
     margin: 10px 0 0;
     border: 1px solid black;
   }
