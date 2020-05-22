@@ -74,6 +74,17 @@ export default {
     @include card;
     margin: 10px 0 0;
     border: 1px solid black;
+
+    input {
+      border: 0;
+      width: 100%;
+      background-color: transparent;
+      text-align: center;
+    }
+
+    input:focus {
+      outline: 0;
+    }
   }
 
   .trello-add-task {
