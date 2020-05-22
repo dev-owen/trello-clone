@@ -2,9 +2,15 @@
   <div class="trello-clone">
     <h1>Trello Clone</h1>
     <div class="trello-list" v-for="list in board" v-bind:key="list.listName">
-      <div class="trello-list-name">{{ list.listName }}</div>
-      <div class="trello-card" v-for="card in list.cards" v-bind:key="card">
-        {{ card }}
+      <div class="trello-list-name">
+        {{ list.listName }}
+      </div>
+      <div
+        class="trello-card"
+        v-for="(card, index) in list.cards"
+        v-bind:key="card"
+      >
+        <input v-model="list.cards[index]"/>
       </div>
       <div class="trello-add-task" v-on:click="addTask(list.listName)">+</div>
     </div>
