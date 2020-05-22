@@ -1,7 +1,11 @@
 <template>
   <div class="trello-clone">
     <h1>Trello Clone</h1>
-    <div class="trello-list" v-for="list in board" v-bind:key="list.listName">
+    <div
+      class="trello-list"
+      v-for="(list, listIdx) in board"
+      v-bind:key="list.listName"
+    >
       <div class="trello-list-name">
         {{ list.listName }}
       </div>
@@ -10,7 +14,15 @@
         v-for="(card, index) in list.cards"
         v-bind:key="card"
       >
-        <input v-model="list.cards[index]"/>
+        <span v-if="listIdx !== 0" v-on:click="moveLeft(listIdx, index)"
+          >&lt;</span
+        >
+        <input v-model="list.cards[index]" />
+        <span
+          v-if="listIdx !== board.length - 1"
+          v-on:click="moveRight(listIdx, index)"
+          >></span
+        >
       </div>
       <div class="trello-add-task" v-on:click="addTask(list.listName)">+</div>
     </div>
@@ -46,6 +58,16 @@ export default {
     addTask(listName) {
       const newTask = prompt(listName, "");
       this.board.find(list => list.listName === listName).cards.push(newTask);
+    },
+    moveLeft(listIdx, cardIdx) {
+      const card = this.board[listIdx].cards[cardIdx];
+      this.board[listIdx].cards.splice(cardIdx, 1);
+      this.board[listIdx - 1].cards.push(card);
+    },
+    moveRight(listIdx, cardIdx) {
+      const card = this.board[listIdx].cards[cardIdx];
+      this.board[listIdx].cards.splice(cardIdx, 1);
+      this.board[listIdx + 1].cards.push(card);
     }
   }
 };
@@ -54,7 +76,7 @@ export default {
 <style scoped lang="scss">
 @mixin card {
   height: fit-content;
-  padding: 10px 0;
+  padding: 10px 5px;
   background-color: lightgray;
 }
 
@@ -72,6 +94,7 @@ export default {
 
   .trello-card {
     @include card;
+    display: flex;
     margin: 10px 0 0;
     border: 1px solid black;
 
